@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -52,16 +53,45 @@ const Index = () => {
           <CardTitle className="text-center">Watermelon Chess</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-7 gap-1">
-            {board.map((cell, index) => (
-              <div
-                key={index}
-                className="w-8 h-8 flex items-center justify-center border border-gray-300"
-                onClick={() => handleCellClick(index)}
-              >
-                {cell}
-              </div>
-            ))}
+          <div className="relative w-full h-0 pb-[100%]">
+            <svg viewBox="0 0 100 100" className="absolute top-0 left-0 w-full h-full">
+              <circle cx="50" cy="50" r="45" stroke="black" strokeWidth="1" fill="none" />
+              <circle cx="50" cy="50" r="20" stroke="black" strokeWidth="1" fill="none" />
+              <path d="M50 5 L50 95" stroke="black" strokeWidth="1" />
+              <path d="M5 50 L95 50" stroke="black" strokeWidth="1" />
+              <path d="M50 50 L95 5" stroke="black" strokeWidth="1" />
+              <path d="M50 50 L5 5" stroke="black" strokeWidth="1" />
+              <path d="M50 50 L95 95" stroke="black" strokeWidth="1" />
+              <path d="M50 50 L5 95" stroke="black" strokeWidth="1" />
+              <path d="M50 50 A45 45 0 0 1 95 50" stroke="black" strokeWidth="1" fill="none" />
+              <path d="M50 50 A45 45 0 0 1 50 95" stroke="black" strokeWidth="1" fill="none" />
+              <path d="M50 50 A45 45 0 0 1 5 50" stroke="black" strokeWidth="1" fill="none" />
+              <path d="M50 50 A45 45 0 0 1 50 5" stroke="black" strokeWidth="1" fill="none" />
+              <path d="M50 50 A20 20 0 0 1 70 50" stroke="black" strokeWidth="1" fill="none" />
+              <path d="M50 50 A20 20 0 0 1 50 70" stroke="black" strokeWidth="1" fill="none" />
+              <path d="M50 50 A20 20 0 0 1 30 50" stroke="black" strokeWidth="1" fill="none" />
+              <path d="M50 50 A20 20 0 0 1 50 30" stroke="black" strokeWidth="1" fill="none" />
+              {board.map((cell, index) => {
+                const angle = (index / BOARD_SIZE) * 2 * Math.PI;
+                const x = 50 + 45 * Math.cos(angle);
+                const y = 50 + 45 * Math.sin(angle);
+                return (
+                  <circle
+                    key={index}
+                    cx={x}
+                    cy={y}
+                    r="2"
+                    fill={cell === "P1" ? "black" : cell === "P2" ? "white" : "none"}
+                    stroke="black"
+                    strokeWidth="1"
+                    onClick={() => handleCellClick(index)}
+                    className={cn("cursor-pointer", {
+                      "hover:fill-gray-400": cell === null,
+                    })}
+                  />
+                );
+              })}
+            </svg>
           </div>
           {winner && <div className="text-center mt-4">Winner: {winner}</div>}
         </CardContent>
