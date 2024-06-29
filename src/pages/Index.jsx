@@ -3,15 +3,17 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const BOARD_SIZE = 21;
+const BOARD_SIZE = 19;
 
 const createInitialBoard = () => {
   const board = Array(BOARD_SIZE).fill(null);
   // Set initial positions for Player A (black) and Player B (white)
-  for (let i = 0; i < 6; i++) {
-    board[i] = "P1";
-    board[BOARD_SIZE - 1 - i] = "P2";
-  }
+  const initialPositions = {
+    P1: [0, 1, 2, 3, 4, 5],
+    P2: [13, 14, 15, 16, 17, 18],
+  };
+  initialPositions.P1.forEach((pos) => (board[pos] = "P1"));
+  initialPositions.P2.forEach((pos) => (board[pos] = "P2"));
   return board;
 };
 
@@ -46,6 +48,28 @@ const Index = () => {
     }
   };
 
+  const positions = [
+    { x: 50, y: 5 },
+    { x: 50, y: 15 },
+    { x: 50, y: 25 },
+    { x: 50, y: 35 },
+    { x: 50, y: 45 },
+    { x: 50, y: 55 },
+    { x: 50, y: 65 },
+    { x: 50, y: 75 },
+    { x: 50, y: 85 },
+    { x: 50, y: 95 },
+    { x: 5, y: 50 },
+    { x: 15, y: 50 },
+    { x: 25, y: 50 },
+    { x: 35, y: 50 },
+    { x: 65, y: 50 },
+    { x: 75, y: 50 },
+    { x: 85, y: 50 },
+    { x: 95, y: 50 },
+    { x: 50, y: 50 },
+  ];
+
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center space-y-4">
       <Card className="w-full max-w-4xl">
@@ -72,9 +96,7 @@ const Index = () => {
               <path d="M50 50 A20 20 0 0 1 30 50" stroke="black" strokeWidth="1" fill="none" />
               <path d="M50 50 A20 20 0 0 1 50 30" stroke="black" strokeWidth="1" fill="none" />
               {board.map((cell, index) => {
-                const angle = (index / BOARD_SIZE) * 2 * Math.PI;
-                const x = 50 + 45 * Math.cos(angle);
-                const y = 50 + 45 * Math.sin(angle);
+                const { x, y } = positions[index];
                 return (
                   <circle
                     key={index}
